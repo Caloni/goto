@@ -207,6 +207,33 @@ c:\Projects\goto>
 
 Aliás, esse uso do `goto` é a maneira de aplicar [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization) em C (Resource acquisition is initialization). Implícito em linguagens como C++ e seus destrutores de objetos, em C é você que precisa fazer a faxina. E se a bagunça foi feita da direita pra esquerda a faxina deve ser feita da esquerda pra direita.
 
+Esse uso super-aninhado do código me lembra do exemplo clássico de sair de muitos loops aninhados. Apenas por didática, vamos citá-lo:
+
+```c
+#include <stdio.h>
+
+main(int argc, char* argv[])
+{
+    int i, j, k;
+
+    for( i = 0; i < 100; ++i )
+    {
+        for( j = 0; j < 100; ++j )
+        {
+            for( k = 0; k < 100; ++k )
+            {
+                if( k == 10 )
+                    /* break... ops. no. to the outer world */
+                    goto outer_world;
+            }
+        }
+    }
+
+    outer_world:
+    ;
+}
+```
+
 Comentei no começo do texto que os `cases` do `switch` são labels de goto disfarçados. E são mesmo. Um dos algoritmos mais famosos de transformação de loop chamado [Duff's device](https://en.wikipedia.org/wiki/Duff%27s_device) junta um `do-while` com `switch` e realiza uma cópia de buffer com um número de bytes variável:
 
 ```c
@@ -318,3 +345,5 @@ tudo esta tao escuro...
 Isso lembra outra utilidade do `goto` que você pode anotar no seu caderninho: ele pode voltar o fluxo, de baixo para cima.
 
 Esse último exemplo é um dos programas C mais lindos do universo. Sua única instrução é o comando rotulado por `infinite` e referencia ele mesmo. É quase o salto incondicional do assembly, materializado na linguagem mais elegante jamais criada em nossa realidade.
+
+PS: Código no [GitHub](https://github.com/Caloni/goto).
