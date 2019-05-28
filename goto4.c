@@ -1,0 +1,5 @@
+main()
+{
+    infinite:
+    goto infinite;
+}
